@@ -125,20 +125,40 @@ docker tag tier2-cifar USER/tier2-cifar:latest
 docker push USER/tier2-cifar:latest
 ```
 ### 4 c. Run from Docker Hub (replace USER with your handle)
+
 ```bash
 # pull
 docker pull USER/tier2-cifar:latest
+```
 
-# ① quick test (uses the Dockerfile’s default CMD)
+### ① quick test (uses the Dockerfile’s default CMD)
+
+```bash
 docker run --rm USER/tier2-cifar:latest
+```
 
-# ② full train → test for run A, saving weights to ./save
+### ② full train → test for run A, saving weights to ./save
+
+#### pull the image once
+
+```bash
+docker pull USER/tier2-cifar:latest
+```
+
+#### quick test (default CMD runs --mode test)
+
+```bash
+docker run --rm USER/tier2-cifar:latest
+```
+
+#### full train → test (run-A) and save weights locally
+
+```bash
 docker run --rm -v "$PWD/save:/app/save" USER/tier2-cifar:latest \
   bash -c "python solution.py --mode train --feature_type hog \
            --num_unit 64 --learning_rate 0.001 --resume False && \
-           python solution.py --mode test --feature_type hog \
-           --num_unit 64"
-
+         python solution.py --mode test  --feature_type hog \
+           --num_unit 64 --learning_rate 0.001"
 ```
 
 ## 5 Discussion
